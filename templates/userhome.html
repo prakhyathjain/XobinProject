@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js">  </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <meta charset="UTF-8">
+    <title>User Home Page</title>
+</head>
+<body ng-app="myHomePage" ng-controller="myHCtrl">
+<a href="{{ url_for('login')}}"><u>Logout</u></a>
+<br>
+<h1>Welcome {{user}}</h1>
+<h2>What would you like to do today?</h2>
+<!--<form action="/user/home" method='POST' id="userForm">-->
+    <input type="text" name="upost" id="upost">
+    <input type="hidden" name="user" id="user" value="{{ user }}">
+<button type="button" name="button" ng-click="submitclick()">Submit</button>
+<!--    <input type="submit" value="Submit">-->
+<!--</form>-->
+<br>
+<hr>
+<h3>All posts created by this user in Json Format</h3>
+<div></div>
+<script>
+        var app = angular.module('myHomePage',[]);
+        app.controller('myHCtrl',function($scope,$http,$window,$timeout,$location){
+            $scope.error="";
+
+        $scope.submitclick = function(){
+
+            var user = $('#user').val();
+            var upost = $('#upost').val();
+
+            $http.post("/backend/user_home",{
+                'user':user,
+                'upost':upost
+            },"json")
+            .then(function(response){
+                   console.log(response.data);
+                   var obj = response.data;
+                   var json = JSON.stringify(obj);
+<!--                   var val=[];-->
+<!--                   val.push(json);-->
+             $("div").append(json+"</br>");
+                    
+            })
+            .catch(function(response){
+                alert("Invalid User or Password");
+            })
+
+        }
+
+        })
+</script>
+
+
+
+</body>
+</html>

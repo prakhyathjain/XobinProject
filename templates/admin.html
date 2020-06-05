@@ -1,0 +1,48 @@
+ <!DOCTYPE html>
+<html>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js">  </script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<head>
+  <title>Admin Page</title>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+  <a href="{{url_for('admin')}}"><u>Go Home</u></a>
+  <h3>Welcome to the  Sample APP</h3>
+    User:<input type="text" name="user" value="" id="user"><br/>
+Password:<input type="password" name="user" value="" id="password"><br/>
+  Confirm Password:<input type="password" name="user" value="" id="confirmpassword"><br/>
+  <button type="button" name="button" ng-click="sampleclick()">Add New User</button><br/>
+
+<script>
+
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope,$http,$window,$timeout,$location) {
+  $scope.error = "";
+
+$scope.sampleclick = function(){
+  var user = $('#user').val();
+  var password = $('#password').val();
+  var confirmpassword = $('#confirmpassword').val();
+  if(password!=confirmpassword){
+    $scope.error="Error is there!"
+  }
+  else{
+    $http.post("/backend/create_user",{
+      'user': user,
+      'password':password
+    })
+    .then(function(response) {
+      alert(response.data)
+    })
+    .catch(function(response){
+      alert("error")
+    })
+  }
+
+}
+
+});
+</script>
+
+</body>
+</html>

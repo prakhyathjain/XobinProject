@@ -1,0 +1,42 @@
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js">  </script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <meta charset="UTF-8">
+    <title>User Login Page</title>
+</head>
+<body ng-app="myLogin" ng-controller="myLCtrl">
+    <h1>Login to your account</h1>
+<!--    <form action = "{{ url_for('user_home') }}" method="POST" id="loginForm">-->
+    User: <input type="text" name="user" value="" id="user"><br/>
+    Password: <input type="password" name="password" value="" id="password"><br/>
+    <button type="button" name="button" ng-click="loginclick()">Login</button>
+<!--    <input type="submit" value="Login">-->
+<!--    </form>-->
+    <script>
+        var app = angular.module('myLogin', []);
+        app.controller('myLCtrl',function($scope,$http,$window,$timeout,$location){
+            $scope.error="";
+
+        $scope.loginclick = function(){
+
+            var user = $('#user').val();
+            var password = $('#password').val();
+            $http.post("/backend/user_login",{
+                'user':user,
+                'password':password
+            })
+            .then(function(response){
+               window.location.replace("/user/home?val="+user);
+
+            })
+            .catch(function(response){
+                alert("Invalid User or Password");
+            })
+
+        }
+
+        })
+    </script>
+</body>
+</html>
